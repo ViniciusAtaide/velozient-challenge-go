@@ -1,0 +1,183 @@
+basePath: /api/v1
+definitions:
+  domain.ErrorResponse:
+    properties:
+      failedField:
+        type: string
+      tag:
+        type: string
+      value:
+        type: string
+    type: object
+  domain.PasswordCard:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      url:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.PasswordCardDto:
+    description: PasswordCard information with url name username and password
+    properties:
+      name:
+        minLength: 3
+        type: string
+      password:
+        minLength: 3
+        type: string
+      url:
+        type: string
+      username:
+        maxLength: 32
+        minLength: 3
+        type: string
+    required:
+    - name
+    - password
+    - url
+    - username
+    type: object
+  domain.PasswordCardUpdateDto:
+    description: PasswordCard information with url name username and password
+    properties:
+      name:
+        minLength: 3
+        type: string
+      password:
+        minLength: 3
+        type: string
+      url:
+        type: string
+      username:
+        maxLength: 32
+        minLength: 3
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: viniciusataid@gmail.com
+    name: Vinicius Ataide
+  description: This is an api for Passwordcards
+  title: PasswordCard's API
+  version: "1.0"
+paths:
+  /password-cards:
+    get:
+      parameters:
+      - description: Pagination limit
+        in: query
+        name: limit
+        type: string
+      - description: Pagination offset
+        in: query
+        name: offset
+        type: string
+      - description: Query by paginationcard name
+        in: query
+        name: name
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.PasswordCard'
+            type: array
+      tags:
+      - PasswordCards
+    post:
+      parameters:
+      - description: Pagination card
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PasswordCardDto'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.PasswordCard'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/domain.ErrorResponse'
+            type: array
+      tags:
+      - PasswordCards
+  /password-cards/{id}:
+    delete:
+      parameters:
+      - description: Pagination card id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/domain.ErrorResponse'
+            type: array
+        "404":
+          description: Not Found
+      tags:
+      - PasswordCards
+    get:
+      parameters:
+      - description: Pagination card id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.PasswordCard'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/domain.ErrorResponse'
+            type: array
+      tags:
+      - PasswordCards
+    patch:
+      parameters:
+      - description: Pagination card id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Pagination card
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PasswordCardUpdateDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/domain.ErrorResponse'
+            type: array
+        "404":
+          description: Not Found
+      tags:
+      - PasswordCards
+swagger: "2.0"

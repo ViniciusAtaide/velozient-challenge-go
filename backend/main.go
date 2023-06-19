@@ -1,43 +1,30 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
+	_ "github.com/viniciusataide/velozient-challenge-go/docs"
 )
 
-type Config struct {
-	Env map[string]string
-}
-
-func NewConfig() *Config {
-	return &Config{}
-}
-
-func NewServer(config *Config) {
-
-}
-
+// @title PasswordCard's API
+// @version 1.0
+// @description This is an api for Passwordcards
+// @contact.name Vinicius Ataide
+// @contact.email viniciusataid@gmail.com
+// @host localhost:3000
+// @BasePath /api/v1
 func main() {
 	err := godotenv.Load()
+	app := fiber.New()
+
 	if err != nil {
 		panic(err)
 	}
 
-	app := fiber.New()
+	bootstrap(app)
 
-	app.Use(cors.New(cors.Config{
-		AllowOrigins:     os.Getenv("BACKEND_CORS_ORIGINS"),
-		AllowMethods:     "*",
-		AllowHeaders:     "*",
-		AllowCredentials: true,
-	}))
-
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
-
-	app.Listen(":3000")
+	app.Listen(fmt.Sprintf(":%s", os.Getenv("SERVER_PORT")))
 }
